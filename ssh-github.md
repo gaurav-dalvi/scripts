@@ -12,4 +12,4 @@ Host *
 ```
 
 3: To verify whether its working or not, just do ,
-  ssh git@github.com and it will tell you whether you are authenticated or not.
+  `ssh git@github.com` and it will tell you whether you are authenticated or not.
