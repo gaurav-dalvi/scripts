@@ -13,3 +13,6 @@ Host *
 
 3: To verify whether its working or not, just do ,
   `ssh git@github.com` and it will tell you whether you are authenticated or not.
+  
+4: To add git branch name in PS1
+`export PS1="\u@\h\\w:\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\$ "`
