@@ -22,6 +22,7 @@ function ConfirmPrompt {
 }
 
 # -------------------  Specify the correct vlan range here...
+netctl aci-gw set -n "topology/pod-1/node-101,topology/pod-1/node-102" -d "TEST-Phys-Dom" -e yes -i no
 netctl global set --fabric-mode aci --vlan-range 1100-1200
 netctl global info
 
@@ -47,11 +48,6 @@ ConfirmPrompt
 netctl group create -t ge -e vmConsumed -e vmProvided ge-net1 app
 netctl group create -t ge ge-net1 db
 
-# ------------------- Creating containers with app/ge and db/ge as a network
-
-docker run -itd --net="app/ge" --name=app1 jainvipin/web /bin/bash
-docker run -itd --net="db/ge" --name=db1 jainvipin/redis /bin/bash
-
 # ------------------- Running docker ps command to check docker container creation
 
 docker ps 
@@ -62,6 +58,11 @@ ConfirmPrompt
 
 netctl app-profile create -t ge -g app,db ge-profile
 netctl app-profile ls -t ge
+
+# ------------------- Creating containers with app/ge and db/ge as a network
+
+docker run -itd --net="app/ge" --name=app1 jainvipin/web /bin/bash
+docker run -itd --net="db/ge" --name=db1 jainvipin/redis /bin/bash
 
 # ------------------- At this point, you will see the app profile created in ACI
 
