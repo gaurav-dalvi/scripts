@@ -24,18 +24,22 @@ function ConfirmPrompt {
 # -------------------  Specify the correct vlan range here...
 
 netctl aci-gw set -n "topology/pod-1/node-101,topology/pod-1/node-102" -d "TEST-Phys-Dom" -e yes -i no
+
 netctl global set --fabric-mode aci --vlan-range 1150-1180
+
 netctl global info
 
 ConfirmPrompt
 
 # ------------------- Create a tenant 
 netctl tenant create TestTenant
+
 netctl tenant ls
 
 # ------------------- Choose the subnet you like...
 
 netctl net create -t TestTenant -e vlan -s 40.1.1.1/24 -g 40.1.1.254 net1
+
 netctl net ls -t TestTenant
 
 ConfirmPrompt
@@ -43,11 +47,13 @@ ConfirmPrompt
 # ------------------- Creating two EPGs : app and db
 
 netctl group create -t TestTenant net1 app
+
 netctl group create -t TestTenant net1 db
 
 # ------------------- Push app-profile to ACI
 
 netctl app-profile create -t TestTenant -g app,db TestTenant-profile
+
 netctl app-profile ls -t TestTenant
 
 # ------------------- At this point, you will see the app profile created in ACI
@@ -57,6 +63,7 @@ ConfirmPrompt
 # ------------------- Creating containers with app/TestTenant and db/TestTenant as a network
 
 docker run -itd --net="app/TestTenant" --name=app1 contiv/web /bin/bash
+
 docker run -itd --net="db/TestTenant" --name=db1 contiv/redis /bin/bash
 
 # ------------------- Running docker ps command to check docker container creation
