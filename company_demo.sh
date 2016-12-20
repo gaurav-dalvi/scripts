@@ -108,13 +108,15 @@ ConfirmPrompt
 
 # ------------------- Cleaning up all the containers, networks and groups."
 
+ConfirmPrompt
+
 docker stop $(docker ps -a | grep web | awk '{print $1}')
 docker stop $(docker ps -a | grep redis | awk '{print $1}')
 docker rm $(docker ps -a | grep web | awk '{print $1}')
 docker rm $(docker ps -a | grep redis | awk '{print $1}')
 
 
-netctl app-profile rm -t TestTenant telenor-profile
+netctl app-profile rm -t TestTenant TestTenant-profile
 netctl group rm -t TestTenant app
 netctl group rm -t TestTenant db
 netctl policy rm -t TestTenant app2db
