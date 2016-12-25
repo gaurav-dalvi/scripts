@@ -22,7 +22,7 @@ this setup
 
 ## Troubleshooting Techniques:
 
-### Make sure you have passwordless SSH setup.
+#### Make sure you have passwordless SSH setup.
 
 To setup passwordless SSH, please use this : http://twincreations.co.uk/pre-shared-keys-for-ssh-login-without-password/
 
@@ -34,7 +34,7 @@ Node1 to Node2
 
 Node1 to Node3
 
-### Make sure your etcd cluster is healthy
+#### Make sure your etcd cluster is healthy
 
 ```
 sudo etcdctl cluster-health
@@ -44,7 +44,7 @@ cluster is healthy
 
 ```
 
-### Make sure your docker swarm cluster is healthy
+#### Make sure your docker swarm cluster is healthy
 
 When you do run `docker info` command, You should be able to see
 
@@ -97,7 +97,7 @@ Debug mode (server): false
 WARNING: No kernel memory limit support
 ```
 
-### Netmaster error :
+#### Netmaster error :
 
 If you see soemthing like this 
 
@@ -140,7 +140,7 @@ sudo rm -rf /var/lib/etcd*
 ```
 
 
-### Check ansible version
+#### Check ansible version
 
 If you see any error realted to ansible, Please make sure that you are using right version of ansible.
 
@@ -151,12 +151,12 @@ ansible 2.2.0.0
   configured module search path = Default w/o overrides
 ```
 
-### Regarding cfg.yml
+#### Regarding cfg.yml
 
 Please make sure that you have correct data and control interfaces entered in cfg.yml file.
 Also please verify APIC details as well.
 
-### Regarding topology of ACI:
+#### Regarding topology of ACI:
 
 You can give ACI topology information to contiv in following manner.
 
@@ -168,7 +168,7 @@ APIC_LEAF_NODES:
     
 ```
 
-### Correct version of aci-gw container:
+#### Correct version of aci-gw container:
 
 Make sure that you are using correct aci-gw version.
 
