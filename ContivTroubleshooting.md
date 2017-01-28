@@ -123,16 +123,20 @@ sudo etcdctl rm --recursive /docker
 curl -X DELETE localhost:8500/v1/kv/contiv.io?recurse=true
 curl -X DELETE localhost:8500/v1/kv/docker?recurse=true
 
--- Uninstall Docker
-
+-- Docker Cleanup Steps
+sudo docker kill -s 9 $(sudo docker ps -q)
+sudo docker rm -fv $(sudo docker ps -a -q)
+sudo systemctl stop docker
+for i in $(mount | grep docker | awk '{ print $3 }'); do sudo umount $i || true; done
+sudo umount /var/lib/docker/devicemapper || true
 sudo yum -y remove docker-engine.x86_64
 sudo yum -y remove docker-engine-selinux.noarch
-
 sudo rm -rf /var/lib/docker
 if above commnd does not execute, please reboot machine and try again
 
 -- Uninstall etcd
 
+sudo systemctl stop etcd
 sudo rm -rf /usr/bin/etcd*
 sudo rm -rf /var/lib/etcd*
 
