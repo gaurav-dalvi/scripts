@@ -56,7 +56,7 @@ You will need to have access to repo contiv/stash
 scp -o StrictHostKeyChecking=no -i <key_path> <key_path> centos@IP:/home/centos/.ssh/
 ```
 
-7: Getting Public IPs from AWS instances and generating cfg.yml file
+7: Getting Public IPs from AWS instances and generating result.yml file
 
 ```
 terraform output public_ip_addresses
@@ -74,7 +74,7 @@ python ./contiv_cfg_generator.py aws <comma separated public IPs>
 ```
 tar xvf contiv-${params["CONTIV_INSTALLER_VERSION"]}.tgz
 cd contiv-${params["CONTIV_INSTALLER_VERSION"]}; 
-./install/ansible/install_swarm.sh -e <key_path> -u centos -f <cfg.yml file path> -i
+./install/ansible/install_swarm.sh -e <key_path> -u centos -f <result.yml file path> -i
 ```
 
 9: To destroy this setup:
