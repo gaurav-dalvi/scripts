@@ -6,12 +6,11 @@
 - Install Docker 1.12.x on the host from which you are going try these commands
 
 
-In this installation will install 
+In this installation we will install following on AWS EC2 instances.
 ```
 Docker Enginer
 Docker swarm
 Contiv services
-on 3 AWS EC2 instances.
 ```
 
 0: Consider `/home/foo` is our workspace. 
