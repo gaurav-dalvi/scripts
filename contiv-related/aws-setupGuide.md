@@ -2,7 +2,7 @@
 
 ## Contiv + Swarm on AWS
 
-- Please install Terrafrom `https://www.terraform.io/intro/getting-started/install.html ` before you try this.
+- Please install Terrafrom https://www.terraform.io/intro/getting-started/install.html before you try this.
 - Install Docker 1.12.x on the host from which you are going try these commands
 
 
