@@ -257,7 +257,7 @@ name                : "eth2"
 name                : "eth3"
 ```
 
-### 9: Troubleshooting Datapath of Contiv:
+### 9: ACI Ping problem:
 
 If you see ping is not working in ACI environment, check if eth1 is enabled or not.
 ```
