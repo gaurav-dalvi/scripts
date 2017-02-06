@@ -58,7 +58,7 @@ Additional parameters can also be updated in install/ansible/env.json file.
 3. Install Contiv with Docker Swarm on hosts specified by cfg.yml in ACI mode.
 ./install/ansible/install_swarm.sh -f cfg.yml -e ~/ssh_key -u admin -i -m aci
 
-3. Install Contiv with Docker Swarm on hosts specified by cfg.yml in ACI mode, using routing as the forwarding mode.
+4. Install Contiv with Docker Swarm on hosts specified by cfg.yml in ACI mode, using routing as the forwarding mode.
 ./install/ansible/install_swarm.sh -f cfg.yml -e ~/ssh_key -u admin -i -m aci -d routing
 
 ```
