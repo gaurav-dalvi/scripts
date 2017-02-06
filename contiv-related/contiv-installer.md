@@ -4,8 +4,9 @@
 
 ## About Contiv Installer:
 
-Contiv swarm installer is launched from a host external to the cluster (Install host in above diagram). All the nodes need to be accessible to the installer host. Please refer above diagram. As diagram suggests, You can have one or many master nodes and any number of worker nodes. 
-As a part of installer, we are going to install following softwares on all the nodes in the cluster.
+Contiv swarm installer is launched from a host external to the cluster (Install host in above diagram). All the nodes need to be accessible to the installer host. Please refer above diagram. As diagram suggests, You can have one or many master nodes and any number of worker nodes. Installer installs netmaster, netplugin, aci-gw container, etcd, docker, swarm manager on master nodes. It will install netplugin, docker, swarm agent on worker nodes.
+
+As a part of installer, we are going to install following components on all the nodes in the cluster.
 
 | Component        | Version    |
 | ------------- |:-------------:| 
@@ -28,18 +29,18 @@ Download the install bundle, save it and extract it on Install host.
 
 Options:
 ```
--f   string            Configuration file listing the hostnames with the control and data interfaces and optionally ACI parameters
--e  string             SSH key to connect to the hosts
--u  string             SSH User
--i                     Install the swarm scheduler stack
+-f   string                 Configuration file listing the hostnames with the control and data interfaces and optionally ACI parameters
+-e  string                  SSH key to connect to the hosts
+-u  string                  SSH User
+-i                          Install the swarm scheduler stack
 
 Options:
 -m  string                  Network Mode for the Contiv installation (“standalone” or “aci”). Default mode is “standalone” and should be used for non ACI-based setups
--d   string                  Forwarding mode (“routing” or “bridge”). Default mode is “bridge”
+-d   string                 Forwarding mode (“routing” or “bridge”). Default mode is “bridge”
 
 Advanced Options:
--v   string                  ACI Image (default is contiv/aci-gw:latest). Use this to specify a specific version of the ACI Image.
--n   string                  DNS name/IP address of the host to be used as the net master  service VIP.
+-v   string                 ACI Image (default is contiv/aci-gw:latest). Use this to specify a specific version of the ACI Image.
+-n   string                 DNS name/IP address of the host to be used as the net master  service VIP.
 
 ```
 
@@ -69,13 +70,13 @@ Additional parameters can also be updated in install/ansible/env.json file.
 Options: 
 ```
 -f   string            Configuration file listing the hostnames with the control and data interfaces and optionally ACI parameters
--e  string                  SSH key to connect to the hosts
--u  string                  SSH User
--i                               Uninstall the scheduler stack
+-e  string             SSH key to connect to the hosts
+-u  string             SSH User
+-i                     Uninstall the scheduler stack
 
 Options:
--r                               Reset etcd state and remove docker containers
--g                              Remove docker images
+-r                     Reset etcd state and remove docker containers
+-g                     Remove docker images
 ```
 
 Additional parameters can also be updated in install/ansible/env.json file.
