@@ -142,24 +142,12 @@ sudo rm -rf /var/lib/etcd*
 
 ```
 
-
-### 5: Check ansible version
-
-If you see any error realted to ansible, Please make sure that you are using right version of ansible.
-
-```
-ansible --version
-ansible 2.2.0.0
-  config file = /home/admin/.ansible.cfg
-  configured module search path = Default w/o overrides
-```
-
-### 6: Regarding cfg.yml
+### 5: Regarding cfg.yml
 
 Please make sure that you have correct data and control interfaces entered in cfg.yml file.
 Also please verify APIC details as well.
 
-### 7: Regarding topology of ACI:
+### 6: Regarding topology of ACI:
 
 You can give ACI topology information to contiv in following manner.
 
@@ -171,7 +159,7 @@ APIC_LEAF_NODES:
     
 ```
 
-### 8: Correct version of aci-gw container:
+### 7: Correct version of aci-gw container:
 
 Make sure that you are using correct aci-gw version.
 
@@ -188,7 +176,7 @@ docker ps command will show you the version of aci-gw which you are running on n
 
 ```
 
-### 9: Troubleshooting Datapath of Contiv:
+### 8: Troubleshooting Datapath of Contiv:
 
 To find container ID from name of the container
 
@@ -269,3 +257,31 @@ name                : "eth2"
 name                : "eth3"
 ```
 
+### 9: Troubleshooting Datapath of Contiv:
+
+If you see ping is not working in ACI environment, check if eth1 is enabled or not.
+```
+ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 00:50:56:0c:02:27 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.236.75/24 brd 10.0.236.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::250:56ff:fe0c:227/64 scope link 
+       valid_lft forever preferred_lft forever
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 00:50:56:8c:7f:04 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::e9dd:85af:62b3:370f/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+
+also please check this- if eth1 is down you should see something like this in the log.
+
+```
+grep "No active interface on uplink. Not reinjecting ARP request pkt" /var/log/messages
+```
