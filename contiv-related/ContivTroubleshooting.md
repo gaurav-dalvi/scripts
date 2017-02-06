@@ -2,8 +2,6 @@
 
 ## Information about this installation
 
-In this installation, we will be installing following components using ansible 2.2.0.0
-
 1: netplugin and netmaster - `v0.1-12-23-2016.19-44-42.UTC`
 ```
 netplugin --version or netmaster --version will give you version of each component running in
