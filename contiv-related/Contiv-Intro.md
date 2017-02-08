@@ -25,11 +25,11 @@ Contiv consists of Netmaster (Contiv Master in above diagram) and Netplugin (Con
 
 #### Netmaster:
 
-This one binary performs so many tasks for Contiv. Its REST API server which can handle multiple requests simultaneously. It learns routes and distributes to Netplugin nodes. It acts as resource manager which does resource allocation of IP addresses, VLAN and VXLAN IDs for networks. It uses distributed state store like etcd or consul to save all the desire runtime of for contiv objects. Because of which contiv becomes completely stateless, scalabel and restart-able. Netmaster has in built heartbeat mechanism ,through which it can talk to peer netmasters. This avoids risk of single point failure. Netmaster can work with external integration manager (Policy engine) like ACI.
+This one binary performs so many tasks for Contiv. Its REST API server which can handle multiple requests simultaneously. It learns routes and distributes to Netplugin nodes. It acts as resource manager which does resource allocation of IP addresses, VLAN and VXLAN IDs for networks. It uses distributed state store like etcd or consul to save all the desire runtime of for contiv objects. Because of which contiv becomes completely stateless, scalable and restart-able. Netmaster has in built heartbeat mechanism, through which it can talk to peer netmasters. This avoids risk of single point failure. Netmaster can work with external integration manager (Policy engine) like ACI.
 
 #### Netplugin:
 
-Each Host agent (Netplugin) is actually implementing [CNI](https://github.com/containernetworking/cni/blob/master/SPEC.md) or [CNM](https://github.com/docker/libnetwork/blob/master/docs/design.md) networking model adopted by popular Container orchestration engines like Kubernates, Docker Swarm, Mesos, Nomad etc. It does communication with netmaster over REST Interface. In addition to this Contiv uses json-rpc to distribute endpoints from netplugin to netmaster. Netplugin handles Up/Down events from contiv networks, Groups. It does co-ordination with other entities eg: fetching policies, creating container interface, Request IP allocation, program host forwarding. Netplugin using contiv's custom open-flow based pipeline on linux host. It communicates with OpenVswtich (OVS) via ovs driver. Contiv currently uses OVS for their data path. Plugin architecture of Contiv, makes it very easy to plug in any data path (eg: VPP, BPF etc). Netplugin also listens and performs 
+Each Host agent (Netplugin) is actually implementing [CNI](https://github.com/containernetworking/cni/blob/master/SPEC.md) or [CNM](https://github.com/docker/libnetwork/blob/master/docs/design.md) networking model adopted by popular Container orchestration engines like Kubernates, Docker Swarm, Mesos, Nomad etc. It does communication with netmaster over REST Interface. In addition to this Contiv uses json-rpc to distribute endpoints from netplugin to netmaster. Netplugin handles Up/Down events from contiv networks, Groups. It does co-ordination with other entities e.g.: fetching policies, creating container interface, Request IP allocation, program host forwarding. Netplugin using contiv's custom open-flow based pipeline on Linux host. It communicates with OpenVswtich (OVS) via ovs driver. Contiv currently uses OVS for their data path. Plugin architecture of Contiv, makes it very easy to plug in any data path (e.g.: VPP, BPF etc). Netplugin also listens and performs 
 
 ### Contiv's Custom Open-Flow based Pipeline:
 
@@ -37,19 +37,19 @@ Each Host agent (Netplugin) is actually implementing [CNI](https://github.com/co
 
 ### Contiv Modes:
 
-Contiv can provide you native connectivity (Traditional L2 and L3 network) as well as overlay connectivity (Public Cloud Case, We support AWS). 
-In traditinal L2 connectivity each packet coming out of Container is marked with certian Vlan so that container workloads can fit in traditional L2 network without any additional settings. 
+Contiv can provide you native connectivity (Traditional L2 and L3 network) as well as overlay connectivity (Public Cloud Case, we support AWS). 
+In traditional L2 connectivity each packet coming out of Container is marked with certain Vlan so that container workloads can fit in traditional L2 network without any additional settings. 
 For L3 connectivity, Contiv uses BGP to distribute routes over network.
 ![](https://github.com/gaurav-dalvi/scripts/blob/master/contiv-related/Native-Overlay.png?raw=true)
 
 ### Contiv + ACI: 
 
 This is special case of running contiv. 
-The integration with ACI, it addresses basic use cases such as Infrastructure automation, Application aware Infrastructure, Scale out models and Dynamic Applications which are key pillars of Modern Day Microservices architectures. Contiv working with ACI, demonstrates how this integration can be achieved in a docker containerized environment to create objects and associations that enable containers to communicate according to policy intent.
+The integration with ACI, it addresses basic use cases such as Infrastructure automation, Application aware Infrastructure, scale out models and Dynamic Applications which are key pillars of Modern Day Microservices architectures. Contiv working with ACI, demonstrates how this integration can be achieved in a docker containerized environment to create objects and associations that enable containers to communicate according to policy intent.
 
 Contiv + ACI integration is done using aci-gw docker container. It uses python SDK of APIC and makes communication between contiv and APIC.
 
-Typical workflow in ACI + Contiv Integration will look like this :
+Typical workflow in ACI + Contiv Integration will look like this:
 
 ![](https://github.com/gaurav-dalvi/scripts/blob/master/contiv-related/aci-integration.png?raw=true)
 Step 1 : You configure tenant and dependent resources in APIC
@@ -60,5 +60,6 @@ Step 3: DevOps person specifies policies for their application workloads to be u
 
 Step 5: Developer launches apps which are managed by orchestration engines like Docker swarm or Kubernates.
 
-Step 6: Contiv Netplugin makes sure that policiy is implemetated correctly. It delegates all policy related context to APIC,
-so that packet fowarding can be taken care of at ACI level.
+Step 6: Contiv Netplugin makes sure that policy is implemented correctly. It delegates all policy related context to APIC,
+so, that packet forwarding can be taken care of at ACI level.
+
