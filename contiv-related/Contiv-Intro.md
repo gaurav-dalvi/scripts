@@ -53,7 +53,12 @@ Typical workflow in ACI + Contiv Integration will look like this :
 
 ![](https://github.com/gaurav-dalvi/scripts/blob/master/contiv-related/aci-integration.png?raw=true)
 Step 1 : You configure tenant and dependent resources in APIC
+
 Step 2 and 4: Contiv Netmaster fetches this information when contiv is running in ACI mode. 
+
 Step 3: DevOps person specifies policies for their application workloads to be used by developers. This is Application intent. 
+
 Step 5: Developer launches apps which are managed by orchestration engines like Docker swarm or Kubernates.
-Step 6: Contiv Netplugin makes sure that policiy is implemetated correctly. It delegates all policy related context to APIC, so that packet fowarding can be taken care of at ACI level.
+
+Step 6: Contiv Netplugin makes sure that policiy is implemetated correctly. It delegates all policy related context to APIC,
+so that packet fowarding can be taken care of at ACI level.
