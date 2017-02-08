@@ -50,6 +50,7 @@ The integration with ACI, it addresses basic use cases such as Infrastructure au
 Contiv + ACI integration is done using aci-gw docker container. It uses python SDK of APIC and makes communication between contiv and APIC.
 
 Typical workflow in ACI + Contiv Integration will look like this :
+
 ![](https://github.com/gaurav-dalvi/scripts/blob/master/contiv-related/aci-integration.png?raw=true)
 Step 1 : You configure tenant and dependent resources in APIC
 Step 2 and 4: Contiv Netmaster fetches this information when contiv is running in ACI mode. 
