@@ -48,7 +48,7 @@ You will need to have access to repo contiv/stash
 
 5: Execute terrraform script
 
-`terraform apply -var buildnum=<username> -var-file aws.tfvars`
+`terraform apply -var buildnum=<uniqueue number> -var-file aws.tfvars`
 
 6: Copy aws key to all the EC2 isntances so that we can have passwordless SSH amaong them
 
