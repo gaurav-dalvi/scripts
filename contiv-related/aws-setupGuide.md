@@ -66,7 +66,7 @@ get all the IPs and the create comma separated string
 Generate cfg.yml like this :
 
 <Not working>
-python ./contiv_cfg_generator.py aws <comma separated public IPs>
+python ./contiv_cfg_generator.py aws <space seperated IPs>
 
 ```
 
