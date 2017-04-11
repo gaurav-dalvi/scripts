@@ -1,12 +1,12 @@
 
 ## Containers Networking Tutorial with Contiv
-Walks through container networking and concepts step by step. We will also explore Contiv's networking features along with policies.
+This tutorial walks you through container networking and concepts step by step. We will also explore Contiv's networking features along with policies.
 
 
 ### Setup
 
 **Note**:
-- Please make sure that you are logged on Installer-Host machine, for follwoing steps.
+- Please make sure that you are logged on `Installer-Host machine`, for follwoing steps.
 
 #### Step 1: Get contiv installer from github. 
 
