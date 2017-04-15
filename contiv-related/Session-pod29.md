@@ -6,19 +6,9 @@ This tutorial walks you through container networking and concepts step by step. 
 ### Setup
 
 **Note**:
-- Please make sure that you are logged on `Installer-Host` machine, for follwoing steps.
+- Please make sure that you are logged on `Installer-Host` machine, and perform the following steps.
 
-#### Step 1: Get contiv installer from github. 
-
-
-```
-cd ~
-wget https://github.com/contiv/install/releases/download/1.0.0-beta.6/contiv-1.0.0-beta.6.tgz
-tar -zxvf contiv-1.0.0-beta.6.tgz
-
-```
-
-#### Step 2: Setup passwordless SSH among these 3 nodes.
+#### Step 1: Setup passwordless SSH from Installer-Host to other nodes.
 
 ```
 mkdir .ssh && chmod 700 .ssh
@@ -30,6 +20,18 @@ sshpass -p cisco.123 ssh-copy-id -i ~/.ssh/id_rsa.pub root@pod29-srv1.ecatsrtpdm
 sshpass -p cisco.123 ssh-copy-id -i ~/.ssh/id_rsa.pub root@pod29-srv2.ecatsrtpdmz.cisco.com -o StrictHostKeyChecking=no
 
 ```
+
+#### Step 2: Get contiv installer from github. 
+
+
+```
+cd ~
+wget https://github.com/contiv/install/releases/download/1.0.0/contiv-1.0.0.tgz
+tar -zxvf contiv-1.0.0.tgz
+
+```
+
+
 
 #### Step 3: Create config file to install contiv
 
@@ -183,10 +185,6 @@ WARNING: No kernel memory limit support
 ```
 
 Docker swarm with 2 nodes is running successfully.
-
-Scheduler schedules these containers using the
-scheduling algorithm `bin-packing` or `spread`, and if they are not placed on 
-different nodes, feel free to start more containers to see the distribution.
 
 #### Step 5: Check contiv and related services.
 
@@ -435,7 +433,7 @@ MASQUERADE rule for outbound traffic for `172.17.0.0/16`
 
 ### Chapter 2: Multi-host networking
 
-Contiv is one the best multi host policy best networking for docker containers. 
+Contiv is the best multi host policy networking for docker containers. 
 
 In this section, let's examine Contiv and Docker overlay solutions.
 
@@ -679,6 +677,8 @@ round-trip min/avg/max = 0.314/0.811/1.567 ms
 / # exit
 ```
 
+Scheduler schedules these containers using the scheduling algorithm `bin-packing` or `spread`, and if they are not placed on different nodes, feel free to start more containers to see the distribution.
+
 
 ## Contiv Policy Features
 
@@ -686,7 +686,7 @@ round-trip min/avg/max = 0.314/0.811/1.567 ms
 ### Chapter 4 - ICMP Policy
 
 In this section, we will create two groups epgA and epgB. We will create container with respect to those groups. 
-Then by default communication between group is allowed. So we will have ICMP deny policy and very that we are not able to ping among those containers.
+Then by default communication between group is allowed. So we will have ICMP deny policy and verify that we are not able to ping among those containers.
 
 Let us create Tenant and Network first.
 
@@ -864,20 +864,20 @@ PING 20.1.1.1 (20.1.1.1) 56(84) bytes of data.
 
 ### Chapter 5 - TCP Policy
 
-In this section, We will add TCP 8001 port allow policy and then will verify this policy.
+In this section, We will add TCP 8001 port deny policy and then will verify this policy.
 
 Creating TCP port policy.
 
 ```
 
-[root@pod29-srv1 ~]# netctl policy rule-add -t TestTenant -d in --protocol tcp --port 8001  --from-group epgA  --action allow policyAB 2
+[root@pod29-srv1 ~]# netctl policy rule-add -t TestTenant -d in --protocol tcp --port 8001  --from-group epgA  --action deny policyAB 2
 
 [root@pod29-srv1 ~]# netctl policy rule-ls -t TestTenant policyAB
 Incoming Rules:
 Rule  Priority  From EndpointGroup  From Network  From IpAddress  Protocol  Port  Action
 ----  --------  ------------------  ------------  ---------       --------  ----  ------
 1     1         epgA                                              icmp      0     deny
-2     1         epgA                                              tcp       8001  allow
+2     1         epgA                                              tcp       8001  deny
 Outgoing Rules:
 Rule  Priority  To EndpointGroup  To Network  To IpAddress  Protocol  Port  Action
 ----  --------  ----------------  ----------  ---------     --------  ----  ------
@@ -885,44 +885,59 @@ Rule  Priority  To EndpointGroup  To Network  To IpAddress  Protocol  Port  Acti
 
 ```
 
-Now check that from app group, only TCP 8001 port is open. To test this, Let us run iperf on BContainer and
-verify using nc utility on BContainer.
+Now check that from app group, TCP 8001 port is denied. To test this, Let us run iperf on BContainer and
+verify using nc utility on AContainer.
 
 
 ```
-On AContainer:
+On BContainer:
 
-[root@pod29-srv1 ~]# docker exec -it AContainer sh
-/ # ifconfig eth0
-eth0      Link encap:Ethernet  HWaddr 02:02:14:01:01:01  
-          inet addr:20.1.1.1  Bcast:0.0.0.0  Mask:255.255.255.0
-          inet6 addr: fe80::2:14ff:fe01:101%32676/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1450  Metric:1
-          RX packets:26 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:18 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:0 
-          RX bytes:2164 (2.1 KiB)  TX bytes:1516 (1.4 KiB)
-
+[root@pod29-srv1 ~]# docker exec -it BContainer sh
 / # iperf -s -p 8001
 ------------------------------------------------------------
 Server listening on TCP port 8001
 TCP window size: 85.3 KByte (default)
 ------------------------------------------------------------
-[  4] local 20.1.1.1 port 8001 connected with 20.1.1.2 port 34332
+
+
+
+On AContainer:
+
+[root@pod29-srv2 ~]# docker exec -it AContainer sh
+/ #  nc -zvw 1 20.1.1.2 8001 --------> here 20.1.1.2 
+is IP address of BContainer
+nc: 20.1.1.2 (20.1.1.2:8001): Operation timed out
+
+You see that the connection to port 8001 is denied.
+
+```
+
+Now, let us ensure that the other ports (e.g. 8000) are open (allowed). 
+
+```
+On BContainer:
+
+[root@pod29-srv1 ~]# docker exec -it BContainer sh
+/ # iperf -s -p 8000
+------------------------------------------------------------
+Server listening on TCP port 8000
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[  4] local 20.1.1.2 port 8000 connected with 20.1.1.1 port 43013
 [ ID] Interval       Transfer     Bandwidth
 [  4]  0.0- 0.0 sec  0.00 Bytes  0.00 bits/sec
 
 
 
+On AContainer:
 
-On BContainer:
+[root@pod29-srv2 ~]# docker exec -it AContainer sh
+/ #  nc -zvw 1 20.1.1.2 8000 --------> here 20.1.1.2 
+is IP address of BContainer
+20.1.1.2 (20.1.1.2:8000) open 
 
-[root@pod29-srv2 ~]# docker exec -it BContainer sh
-/ # nc -zvw 1 20.1.1.1 8001 --------> here 20.1.1.1 is IP address of AContainer
-20.1.1.1 (20.1.1.1:8001) open
-/ # nc -zvw 1 20.1.1.1 8000
 
-You see that port 8001 is open and port 8000 is not open.
+You see that the connection to port 8000 is allowed.
 
 ```
 
