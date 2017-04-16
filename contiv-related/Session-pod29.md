@@ -52,7 +52,7 @@ EOF
 #### Step 4: Install contiv on pod29-srv1 and pod29-srv2
 
 ```
-cd ~/contiv-1.0.0-beta.6
+cd ~/contiv-1.0.0
 
 ./install/ansible/install_swarm.sh -f ~/cfg.yml -e ~/.ssh/id_rsa -u root -i
 
@@ -108,7 +108,7 @@ export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375
 [root@pod29-srv1 ~]# 
 
 
-On pod29-srv1:
+On pod29-srv2:
 
 [root@pod29-srv2 ~]# export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375
 [root@pod29-srv2 ~]# 
@@ -134,7 +134,7 @@ export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375
 Now verify that swarm is running successfully or not.
 
 ```
-[root@pod29-srv2 ~]# [root@pod29-srv2 ~]# docker info
+[root@pod29-srv2 ~]# docker info
 Containers: 6
  Running: 6
  Paused: 0
@@ -255,12 +255,12 @@ on top of REST interface.
 ```
 [root@pod29-srv1 ~]# netctl version
 Client Version:
-Version: 1.0.0-beta.6
+Version: 1.0.0
 GitCommit: aa79db4
 BuildTime: 04-06-2017.11-39-44.UTC
 
 Server Version:
-Version: 1.0.0-beta.3
+Version: 1.0.0
 GitCommit: e820dd7
 BuildTime: 02-17-2017.23-55-08.UTC
 [root@pod29-srv1 ~]# 
@@ -747,8 +747,8 @@ dce44a32c67d        pod29-srv2.ecatsrtpdmz.cisco.com/none              null     
 
 ```
 
-Now Let us create two containers on each group network and check whether they are abel to ping each other or not.
-By default, Contiv allows ping between groups under same network.
+Let us create two containers on each group network and check whether they are able to ping each other or not.
+By default, Contiv allows connectivity between groups under same network.
 
 
 ```
@@ -807,7 +807,7 @@ rtt min/avg/max/mdev = 0.168/0.712/1.738/0.726 ms
 
 ```
 
-Now add ICMP Deny policy. Container should not be abel to ping each other now.
+Now add ICMP Deny policy. Container should not be able to ping each other now.
 
 Adding policy and modifying group.
 
@@ -1002,7 +1002,7 @@ e7b6621a8257        quay.io/coreos/etcd:v2.3.8       "/etcd"                  48
 ```
 
 Now run iperf server and client to find out current bandwidth which we are getting on the network
-where you are running this tutorial. It may vary depending upon base OS , network speed etc.
+where you are running this tutorial. It may vary depending upon base OS, network speed etc.
 
 
 ```
