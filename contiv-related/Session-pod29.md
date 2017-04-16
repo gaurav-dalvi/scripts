@@ -4,7 +4,7 @@ This tutorial walks you through container networking and concepts step by step. 
 
 ### Lab Setup
 
-In this lab we are going to use two VMs which are hosted on Cisco's UCS hardwared. Those are running on ESX. Through vswitch those are connected to TOR switches.
+In this lab we are going to use two VMs which are hosted on Cisco's UCS servers. Those are running on ESX. Through vswitch those are connected to TOR switches.
 
 ![Lab Setup](https://github.com/contiv/contiv.github.io/blob/master/extras/Dockercon-2017/Lab-Setup.png?raw=true)
 
