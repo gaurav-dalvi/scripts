@@ -6,6 +6,7 @@ This tutorial walks you through container networking and concepts step by step. 
 ### Contiv Installation
 
 The Contiv Docker Swarm installer is launched from a host external to the cluster.  All the nodes must be accessible to the Contiv Ansible-based installer host through SSH.
+
 ![installer](https://github.com/contiv/install/blob/master/installer.png?raw=true)
 
 **Note**:
