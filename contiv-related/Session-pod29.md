@@ -331,7 +331,7 @@ that schedules regular docker containers e.g. Nomad or Mesos docker containerize
 Let's examine the networking a container gets upon vanilla run
 
 ```
-[root@pod29-srv1 ~]# [root@pod29-srv1 ~]# docker network ls
+[root@pod29-srv1 ~]# docker network ls
 NETWORK ID          NAME                                      DRIVER              SCOPE
 4c7a511c1131        pod29-srv1.ecatsrtpdmz.cisco.com/bridge   bridge              local               
 e8be04ef7ab7        pod29-srv1.ecatsrtpdmz.cisco.com/host     host                local               
