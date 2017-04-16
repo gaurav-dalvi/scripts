@@ -524,8 +524,6 @@ blue
 ```
 
 After the tenant is created, we can create network within in tenant `blue` and run containers.
-Here we chose the same subnet and network name for it.
-the same subnet and same network name, that we used before
 
 ```
 [root@pod29-srv2 ~]# netctl net create -t blue --subnet=40.1.2.0/24 contiv-net 
