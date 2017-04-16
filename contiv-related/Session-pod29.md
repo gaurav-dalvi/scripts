@@ -97,46 +97,10 @@ To verify docker swarm cluster, let us perform following steps.
 On pod29-srv1:
 
 [root@pod29-srv1 ~]# export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375
-[root@pod29-srv1 ~]# 
-[root@pod29-srv1 ~]# cd ~
-[root@pod29-srv1 ~]# sed -i -e '$a export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375' .bashrc
-[root@pod29-srv1 ~]# cat .bashrc
-# .bashrc
-
-# User specific aliases and functions
-
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
-fi
-export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375
-[root@pod29-srv1 ~]# 
-
 
 On pod29-srv2:
 
 [root@pod29-srv2 ~]# export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375
-[root@pod29-srv2 ~]# 
-[root@pod29-srv2 ~]# cd ~
-[root@pod29-srv2 ~]# sed -i -e '$a export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375' .bashrc
-[root@pod29-srv2 ~]# cat .bashrc
-# .bashrc
-
-# User specific aliases and functions
-
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
-fi
-export DOCKER_HOST=tcp://pod29-srv1.ecatsrtpdmz.cisco.com:2375
 
 ```
 
