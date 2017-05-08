@@ -1,0 +1,83 @@
+#!groovy
+pipeline {
+  agent { label 'ci-runner' }
+  options {
+    timeout(time: 20, unit: 'MINUTES')
+  }
+  stages {
+    stage('Creating tmp directory') {
+      steps {
+        println "=============================="
+        println "Creating tmp directory under workspace"
+        sh """
+        mkdir "${env.WORKSPACE}/tmp"
+        cd "${env.WORKSPACE}/tmp"
+        """
+      }
+    }
+    stage('Install docker-machine') {
+      steps {
+        println "=============================="
+        println "Installing docker-machine"
+        sh """
+        curl -L https://github.com/docker/machine/releases/download/v0.10.0/docker-machine-`uname -s`-`uname -m` >docker-machine &&
+        chmod +x docker-machine
+        ./docker-machine ls
+        """
+      }
+    }
+    stage('Install helm') {
+      steps {
+        println "=============================="
+        println "Installing helm"
+        sh """
+        curl -L https://kubernetes-helm.storage.googleapis.com/helm-v2.4.1-linux-amd64.tar.gz >helm.tar.gz
+        tar -zxvf helm.tar.gz
+        mv linux-amd64/helm .
+        chmod +x helm
+        """
+      }
+    }
+    stage('Install kubectl') {
+      steps {
+        println "=============================="
+        println "Installing kubectl"
+        sh """
+        curl -O https://storage.googleapis.com/kubernetes-release/release/v1.6.1/bin/linux/amd64/kubectl
+        chmod +x kubectl
+        """
+      }
+    }
+    stage('Create instance in metacloud') {
+    steps {
+      println "=============================="
+      println "Creating VM in metacloud"
+      sh """
+      ./docker-machine -D create --driver openstack \
+        --openstack-auth-url https://api-trial5.client.metacloud.net:5000/v2.0 \
+        --openstack-username containerx \
+        --openstack-password 'Containers2017!!' \
+        --openstack-tenant-name containerx \
+        --openstack-flavor-name m1.large \
+        --openstack-image-name CentOS-7-x86_64-GenericCloud-1508-mc \
+        --openstack-net-name containerx \
+        --openstack-ssh-user cloud \
+        --openstack-floatingip-pool "PUBLIC DO NOT MODIFY" \
+        --openstack-sec-groups cx-mgmt $USER-cx-k8s
+
+      ./docker-machine ls
+      """
+      }
+    }
+    stage('Cleanup task') {
+    steps {
+      println "=============================="
+      println "Cleaning up jenkins node dir"
+      sh """
+      rm -rf "${env.WORKSPACE}/tmp"
+      docker-machine rm -f $USER-cx-k8s
+      """
+      }
+    }
+  }
+}
