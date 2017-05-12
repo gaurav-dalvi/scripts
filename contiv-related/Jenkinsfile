@@ -5,55 +5,57 @@ pipeline {
     timeout(time: 20, unit: 'MINUTES')
   }
   stages {
-    stage('Creating tmp directory') {
-      steps {
-        println "=============================="
-        println "Creating tmp directory under workspace"
-        sh """
-        mkdir "${env.WORKSPACE}/tmp"
-        cd "${env.WORKSPACE}/tmp"
-        """
-      }
+  stage('Creating tmp directory') {
+    steps {
+      println "=============================="
+      println "Creating tmp directory under workspace"
+      sh """
+        mkdir "$WORKSPACE/tmp"
+        cd "$WORKSPACE/tmp"
+      """
     }
-    stage('Install docker-machine') {
-      steps {
-        println "=============================="
-        println "Installing docker-machine"
-        sh """
+  }
+  stage('Install docker-machine') {
+    steps {
+      println "=============================="
+      println "Installing docker-machine"
+      sh """
         curl -L https://github.com/docker/machine/releases/download/v0.10.0/docker-machine-`uname -s`-`uname -m` >docker-machine &&
         chmod +x docker-machine
-        ./docker-machine ls
-        """
-      }
+        export PATH="$PATH":"$WORKSPACE"
+        docker-machine rm -f $USER-cx-k8s
+      """
     }
-    stage('Install helm') {
-      steps {
-        println "=============================="
-        println "Installing helm"
-        sh """
+  }
+  stage('Install helm') {
+    steps {
+      println "=============================="
+      println "Installing helm"
+      sh """
         curl -L https://kubernetes-helm.storage.googleapis.com/helm-v2.4.1-linux-amd64.tar.gz >helm.tar.gz
         tar -zxvf helm.tar.gz
         mv linux-amd64/helm .
         chmod +x helm
-        """
-      }
+      """
     }
-    stage('Install kubectl') {
-      steps {
-        println "=============================="
-        println "Installing kubectl"
-        sh """
-        curl -O https://storage.googleapis.com/kubernetes-release/release/v1.6.1/bin/linux/amd64/kubectl
-        chmod +x kubectl
-        """
-      }
-    }
-    stage('Create instance in metacloud') {
+  }
+  stage('Install kubectl') {
     steps {
       println "=============================="
-      println "Creating VM in metacloud"
+      println "Installing kubectl"
       sh """
-      ./docker-machine -D create --driver openstack \
+        curl -O https://storage.googleapis.com/kubernetes-release/release/v1.6.1/bin/linux/amd64/kubectl
+        chmod +x kubectl
+      """
+    }
+  }
+  stage('Create instance in metacloud') {
+  steps {
+    println "=============================="
+    println "Creating VM in metacloud"
+    sh """
+      export PATH="$PATH":"$WORKSPACE"
+      docker-machine -D create --driver openstack \
         --openstack-auth-url https://api-trial5.client.metacloud.net:5000/v2.0 \
         --openstack-username containerx \
         --openstack-password 'Containers2017!!' \
@@ -65,19 +67,49 @@ pipeline {
         --openstack-floatingip-pool "PUBLIC DO NOT MODIFY" \
         --openstack-sec-groups cx-mgmt $USER-cx-k8s
 
-      ./docker-machine ls
-      """
-      }
+      docker-machine ls
+    """
     }
-    stage('Cleanup task') {
+  }
+  stage('Deploy K8s') {
+    steps {
+        println "=============================="
+        println "Deploying k8s"
+        sh '''
+            export PATH="$PATH":"$WORKSPACE"
+            cd build
+            eval $(docker-machine env $USER-cx-k8s)
+            docker-machine ssh $USER-cx-k8s -- sudo sed -i.bak '/requiretty/d' /etc/sudoers
+            python deploy.py deploy-k8s
+        '''
+      }
+  }
+  stage('Docker container: build and upload to registry (premerge)') {
     steps {
       println "=============================="
-      println "Cleaning up jenkins node dir"
-      sh """
-      rm -rf "${env.WORKSPACE}/tmp"
-      docker-machine rm -f $USER-cx-k8s
-      """
+      println "Building containers and uploading to registry"
+      withCredentials([[$class: "UsernamePasswordMultiBinding",
+                        credentialsId: "harmony-cx-registry",
+                        usernameVariable: "USERNAME",
+                        passwordVariable: "PASSWORD"]]) {
+        sh '''
+            cd build
+            docker login -u "$USERNAME" -p "$PASSWORD" registry-write.ci.dfj.io:443
+            export CX_DOCKER_REPO="registry-write.ci.dfj.io:443/$USERNAME" && python deploy.py build-k8s
+        '''
       }
     }
   }
-}
+  stage('Cleanup task') {
+   steps {
+     println "=============================="
+     println "Cleaning up jenkins node dir"
+     sh """
+       export PATH="$PATH":"$WORKSPACE"
+       ./docker-machine rm -f $USER-cx-k8s
+       rm -rf "$WORKSPACE/tmp"
+     """
+     }
+   }
+  }
+ }
