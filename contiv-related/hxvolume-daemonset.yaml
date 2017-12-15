@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: ccphxvolume
+  labels:
+    name: ccphxvolume
+spec:
+  template:
+    metadata:
+      labels:
+        name: ccphxvolume
+    spec:
+      containers:
+      - name: hxvolume
+        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.g6a2bc60.premerge
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - mountPath: /tmp
+            name: hxvolume-mount
+          - mountpath: /etc/iscsi
+            name: iscsi-iname-mount
+      volumes:
+        - name: hxvolume-mount
+          hostPath:
+            path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/hyperflex~hxvolume/
+        - name: iscsi-iname-mount
+          hostpath:
+            path: /etc/iscsi
