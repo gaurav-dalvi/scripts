@@ -19,12 +19,7 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: hxvolume-mount
-          - mountpath: /etc/iscsi
-            name: iscsi-iname-mount
       volumes:
         - name: hxvolume-mount
           hostPath:
             path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/hyperflex~hxvolume/
-        - name: iscsi-iname-mount
-          hostpath:
-            path: /etc/iscsi
