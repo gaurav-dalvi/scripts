@@ -12,14 +12,19 @@ spec:
     spec:
       containers:
       - name: hxvolume
-        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.g6a2bc60.premerge
+        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.g25743e8.premerge
         imagePullPolicy: Always
         securityContext:
           privileged: true
         volumeMounts:
           - mountPath: /tmp
             name: hxvolume-mount
+          - mountPath: /etc/iscsi
+            name: iscsi-volume
       volumes:
         - name: hxvolume-mount
           hostPath:
             path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/hyperflex~hxvolume/
+        - name: iscsi-volume
+          hostPath:
+            path: /etc/iscsi
