@@ -13,7 +13,7 @@ spec:
       containers:
       - name: hxvolume
         image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gefcd90c.premerge
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
       initContainers:
