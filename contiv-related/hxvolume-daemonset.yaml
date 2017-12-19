@@ -15,17 +15,17 @@ spec:
         effect: NoSchedule
       containers:
       - name: hxvolume
-        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gefcd90c.premerge
+        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gbcbe011.premerge
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
         command: ["/bin/sh", "-c", "while true; do sleep 2; done"]
       initContainers:
       - name: iscsi-initiator
-        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gefcd90c.premerge
+        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gbcbe011.premerge
         command: ['sh', '-c', 'SCSI_initiator_name=$(iscsi-iname); echo $SCSI_initiator_name > /etc/iscsi/initiatorname.iscsi']
       - name: hxvolume-copy
-        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gefcd90c.premerge
+        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gbcbe011.premerge
         command: ['sh', '-c', 'cp /hxcache/hxvolume /hxhostmount/']
         volumeMounts:
           - mountPath: /hxhostmount
