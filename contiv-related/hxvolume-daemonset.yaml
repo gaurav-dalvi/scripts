@@ -10,6 +10,9 @@ spec:
       labels:
         name: ccphxvolume
     spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
       containers:
       - name: hxvolume
         image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gefcd90c.premerge
