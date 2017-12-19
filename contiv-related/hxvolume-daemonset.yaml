@@ -23,9 +23,9 @@ spec:
         command: ['sh', '-c', 'SCSI_initiator_name=$(iscsi-iname); echo $SCSI_initiator_name > /etc/iscsi/initiatorname.iscsi']
       - name: hxvolume-copy
         image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gefcd90c.premerge
-        command: ['sh', '-c', 'cp /hxcache/hxvolume /hxcache/']
+        command: ['sh', '-c', 'cp /hxcache/hxvolume /hxhostmount/']
         volumeMounts:
-          - mountPath: /hxcache
+          - mountPath: /hxhostmount
             name: hxvolume-mount
           - mountPath: /etc/iscsi
             name: iscsi-volume
