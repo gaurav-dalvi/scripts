@@ -15,7 +15,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: hxvolume
-        image: registry.ci.dfj.io/metacloud_ccp/hxvolume:0.5.0-18.gbcbe011.premerge
+        image: registry.ci.dfj.io/cpsg_ccp/hxvolume:0.6.0-10.g0ea9848.premerge
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
